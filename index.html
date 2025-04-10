@@ -1,1 +1,394 @@
+  
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #quiz-container {
+            background: #ffffff;
+            border: 2px solid #000;
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #0066cc;
+            margin-bottom: 20px;
+        }
+
+        #question-container {
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #e6f2ff;
+        }
+
+        #question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        #options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            display: block;
+            margin: 5px auto;
+            padding: 12px 20px;
+            font-size: 1em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 90%;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background-color: #0056b3;
+        }
+
+        #next-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #next-button:hover {
+            background-color: #218838;
+        }
+
+        #feedback {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            min-height: 50px;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        #score-container {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        #score {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        #progress {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+
+        #final-message {
+            margin-top: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            #quiz-container {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            .option-btn {
+                width: 100%;
+                padding: 10px 15px;
+            }
+        }
+    
+
+
+    
+        Quiz: Oceanos e Continentes
+        
+            Pergunta aparecerá aqui
+            
+                
+            
+        
+        
+        
+            Pontuação: 0
+            Pergunta 1 de 10
+        
+        Próxima Pergunta
+        
+    
+
+    
+        const allQuestions = [
+            {
+                question: "Qual é a porcentagem aproximada da superfície terrestre coberta por água?",
+                options: ["30%", "50%", "70%", "90%"],
+                correct: 2,
+                explanation: "Cerca de 70% da superfície terrestre é coberta por água, formando os oceanos e mares."
+            },
+            {
+                question: "Qual é o maior continente do mundo?",
+                options: ["América", "África", "Ásia", "Europa"],
+                correct: 2,
+                explanation: "A Ásia é o maior continente do mundo, com aproximadamente 44,61 milhões de km²."
+            },
+            {
+                question: "Quantos continentes existem atualmente no planeta Terra?",
+                options: ["5", "6", "7", "8"],
+                correct: 1,
+                explanation: "Atualmente, o planeta está dividido em 6 continentes: Ásia, África, América, Europa, Oceania e Antártida."
+            },
+            {
+                question: "Qual é o único continente que não é dividido em países?",
+                options: ["Oceania", "Antártida", "Europa", "África"],
+                correct: 1,
+                explanation: "A Antártida é o único continente que não é dividido em países, sendo uma área de pesquisas para vários países."
+            },
+            {
+                question: "Qual é o maior oceano do mundo?",
+                options: ["Atlântico", "Índico", "Pacífico", "Glacial Ártico"],
+                correct: 2,
+                explanation: "O Oceano Pacífico é o maior oceano do mundo, localizado entre a Ásia, a América e a Oceania."
+            },
+            {
+                question: "Qual é o oceano que banha o litoral brasileiro?",
+                options: ["Pacífico", "Atlântico", "Índico", "Glacial Ártico"],
+                correct: 1,
+                explanation: "O Oceano Atlântico banha o litoral brasileiro, sendo o segundo maior oceano do mundo."
+            },
+            {
+                question: "Qual é o nome do formato real da Terra?",
+                options: ["Esfera", "Geoide", "Elipsoide", "Planisfério"],
+                correct: 1,
+                explanation: "O formato real da Terra é chamado de geoide, que é uma esfera imperfeita com deformidades e partes levemente achatadas nos polos geográficos."
+            },
+            {
+                question: "Qual representação permite visualizar toda a superfície terrestre de uma só vez?",
+                options: ["Globo terrestre", "Planisfério", "Mapa regional", "Atlas"],
+                correct: 1,
+                explanation: "O planisfério, também chamado mapa-múndi, é uma representação plana que permite visualizar toda a superfície da Terra de uma vez."
+            },
+            {
+                question: "Qual é o continente conhecido como 'berço da humanidade'?",
+                options: ["Ásia", "África", "Europa", "América"],
+                correct: 1,
+                explanation: "A África é reconhecida como o berço da humanidade, ou seja, como o local de origem da nossa espécie."
+            },
+            {
+                question: "Qual era o nome do supercontinente que existia há centenas de milhões de anos?",
+                options: ["Gondwana", "Laurásia", "Pangeia", "Eurásia"],
+                correct: 2,
+                explanation: "Pangeia era o nome do supercontinente que existia há centenas de milhões de anos, significando 'toda a terra'."
+            },
+            {
+                question: "Quais são as linhas imaginárias que dividem o planeta verticalmente?",
+                options: ["Paralelos", "Meridianos", "Trópicos", "Círculos polares"],
+                correct: 1,
+                explanation: "Os meridianos são linhas imaginárias verticais que dividem o planeta em 24 faixas que indicam os fusos horários."
+            },
+            {
+                question: "Quais são as linhas imaginárias que dividem o planeta horizontalmente?",
+                options: ["Meridianos", "Paralelos", "Fusos horários", "Coordenadas"],
+                correct: 1,
+                explanation: "Os paralelos são linhas imaginárias horizontais que formam círculos maiores na parte central da Terra e menores nas proximidades dos polos."
+            },
+            {
+                question: "Qual é o segundo continente mais populoso do mundo?",
+                options: ["América", "África", "Europa", "Ásia"],
+                correct: 1,
+                explanation: "A África é o segundo continente mais populoso do mundo, ficando atrás apenas da Ásia."
+            },
+            {
+                question: "Qual é o segundo maior oceano do mundo?",
+                options: ["Atlântico", "Índico", "Pacífico", "Glacial Antártico"],
+                correct: 0,
+                explanation: "O Oceano Atlântico é o segundo maior oceano do mundo, atrás apenas do Oceano Pacífico."
+            },
+            {
+                question: "Qual é o país mais populoso do mundo em 2024, segundo o mapa apresentado no texto?",
+                options: ["Brasil", "Estados Unidos", "Índia", "China"],
+                correct: 2,
+                explanation: "De acordo com o mapa apresentado no texto, a Índia é o país mais populoso do mundo em 2024."
+            },
+            {
+                question: "Qual é o continente com o menor número de habitantes?",
+                options: ["Europa", "Oceania", "Antártida", "América"],
+                correct: 2,
+                explanation: "A Antártida é o continente com o menor número de habitantes, abrigando principalmente pesquisadores temporários."
+            },
+            {
+                question: "Qual é o nome dado à grande massa de resíduos encontrada no Oceano Pacífico?",
+                options: ["Ilha de Plástico", "Sétimo Continente", "Grande Ilha de Lixo do Pacífico", "Continente Flutuante"],
+                correct: 2,
+                explanation: "A grande massa de resíduos encontrada no Oceano Pacífico é conhecida como Grande Ilha de Lixo do Pacífico ou também chamada de Sétimo Continente."
+            },
+            {
+                question: "Qual é o continente onde está localizado o Monte Everest?",
+                options: ["África", "América", "Ásia", "Europa"],
+                correct: 2,
+                explanation: "O Monte Everest, o ponto mais elevado da Terra, está localizado na Ásia, na cordilheira do Himalaia."
+            },
+            {
+                question: "Qual é a porcentagem aproximada de água salgada em relação ao total de água no planeta?",
+                options: ["70%", "85%", "97%", "99%"],
+                correct: 2,
+                explanation: "Aproximadamente 97% da água do planeta é salgada, formando os mares e oceanos."
+            },
+            {
+                question: "Qual é o país com maior população na Oceania?",
+                options: ["Nova Zelândia", "Austrália", "Fiji", "Papua-Nova Guiné"],
+                correct: 1,
+                explanation: "A Austrália é o país com maior população na Oceania, com cerca de 26 milhões de habitantes."
+            },
+            {
+                question: "Qual é o continente onde está localizada a cidade de La Paz, a capital mais alta do mundo?",
+                options: ["Ásia", "África", "América", "Europa"],
+                correct: 2,
+                explanation: "La Paz, a capital mais alta do mundo, está localizada na Bolívia, no continente americano."
+            },
+            {
+                question: "Qual é o oceano localizado entre a Ásia, a América e a Oceania?",
+                options: ["Atlântico", "Pacífico", "Índico", "Glacial Ártico"],
+                correct: 1,
+                explanation: "O Oceano Pacífico está localizado entre a Ásia, a América e a Oceania, sendo o maior oceano do mundo."
+            },
+            {
+                question: "Qual é o continente chamado de 'Novíssimo Mundo'?",
+                options: ["América", "Oceania", "Antártida", "África"],
+                correct: 1,
+                explanation: "A Oceania é chamada de 'Novíssimo Mundo', pois foi o último continente a ser explorado."
+            },
+            {
+                question: "Qual é a posição do Brasil entre os países mais populosos do mundo em 2024?",
+                options: ["5ª", "6ª", "7ª", "8ª"],
+                correct: 2,
+                explanation: "Em 2024, o Brasil ocupava a 7ª posição entre os países mais populosos do mundo, com cerca de 203 milhões de habitantes."
+            },
+            {
+                question: "Qual é o oceano que banha o litoral leste da África?",
+                options: ["Atlântico", "Pacífico", "Índico", "Glacial Antártico"],
+                correct: 2,
+                explanation: "O Oceano Índico banha o litoral leste da África, o sul da Ásia e parte da Oceania."
+            },
+            {
+                question: "Qual é o país mais populoso da África mencionado no texto?",
+                options: ["África do Sul", "Egito", "Nigéria", "Marrocos"],
+                correct: 2,
+                explanation: "A Nigéria é o país mais populoso da África, com cerca de 219 milhões de habitantes em 2022."
+            },
+            {
+                question: "Qual é a utilidade principal dos meridianos além da localização?",
+                options: ["Indicar zonas climáticas", "Indicar fusos horários", "Medir a altitude", "Determinar estações do ano"],
+                correct: 1,
+                explanation: "Além da localização, os meridianos são úteis para indicar os fusos horários, permitindo saber a diferença de horas entre países e continentes."
+            },
+            {
+                question: "Qual é a utilidade principal dos paralelos além da localização?",
+                options: ["Indicar zonas climáticas", "Indicar fusos horários", "Medir a altitude", "Determinar a longitude"],
+                correct: 0,
+                explanation: "Além da localização, os paralelos ajudam a identificar semelhanças e diferenças climáticas que ocorrem no nosso planeta."
+            },
+            {
+                question: "Qual é o continente onde está localizada a cidade de Xangai?",
+                options: ["Europa", "América", "África", "Ásia"],
+                correct: 3,
+                explanation: "Xangai, a maior cidade da China, está localizada no continente asiático."
+            },
+            {
+                question: "Qual é o país que possui parte de seu território na Europa e parte na Ásia?",
+                options: ["Turquia", "Rússia", "Cazaquistão", "Ucrânia"],
+                correct: 1,
+                explanation: "A Rússia possui parte de seu território na Europa e outra parte na Ásia, sendo um país transcontinental."
+            },
+            {
+                question: "Qual é a língua predominante na Oceania?",
+                options: ["Francês", "Inglês", "Espanhol", "Português"],
+                correct: 1,
+                explanation: "O inglês é a língua predominante na Oceania, embora também sejam falados o francês e línguas nativas."
+            },
+            {
+                question: "Qual animal é exclusivo da fauna da Oceania?",
+                options: ["Leão", "Elefante", "Canguru", "Urso polar"],
+                correct: 2,
+                explanation: "O canguru é um animal exclusivo da fauna da Oceania, especificamente da Austrália."
+            },
+            {
+                question: "Qual é o terceiro maior oceano do mundo?",
+                options: ["Atlântico", "Índico", "Glacial Ártico", "Glacial Antártico"],
+                correct: 1,
+                explanation: "O Oceano Índico é o terceiro maior oceano do mundo, atrás do Pacífico e do Atlântico."
+            },
+            {
+                question: "Qual é o terceiro maior continente do mundo?",
+                options: ["Europa", "África", "América", "Oceania"],
+                correct: 1,
+                explanation: "A África é o terceiro maior continente do mundo, atrás da Ásia e da América."
+            },
+            {
+                question: "Qual é o país mais populoso da América do Sul?",
+                options: ["Argentina", "Brasil", "Colômbia", "Peru"],
+                correct: 1,
+                explanation: "O Brasil é o país mais populoso da América do Sul, com aproximadamente 203 milhões de habitantes em 2022."
+            },
+            {
+                question: "Qual é o continente onde está localizada a cidade de Queenstown?",
+                options: ["Europa", "América", "Oceania", "África"],
+                correct: 2,
+                explanation: "Queenstown está localizada na Nova Zelândia, que faz parte do continente da Oceania."
+            },
+            {
+                question: "Qual é o continente onde está localizada a cidade de Londres?",
+                options: ["América", "Europa", "Ásia", "África"],
+                correct: 1,
+                explanation: "Londres, a capital da Inglaterra, está localizada no continente europeu."
+            },
+            {
+                question: "Qual é o oceano que banha a parte norte da América, da Europa e da Ásia?",
+                options: ["Atlântico", "Pacífico", "Glacial Ártico", "Índico"],
+                correct: 2,
+                explanation: "O Oceano Glacial Ártico banha a parte norte da América, da Europa e da Ásia."
+            },
+            {
+                question: "Qual é
 
