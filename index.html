@@ -390,5 +390,222 @@
                 explanation: "O Oceano Glacial Ártico banha a parte norte da América, da Europa e da Ásia."
             },
             {
-                question: "Qual é
+                question: "Qual é o ponto mais elevado da Terra mencionado no texto?",
+                options: ["Monte Kilimanjaro", "Monte Everest", "Monte Aconcágua", "Monte Elbrus"],
+                correct: 1,
+                explanation: "O Monte Everest, localizado na Ásia, é o ponto mais elevado da Terra."
+            },
+            {
+                question: "Qual é o ponto mais baixo da Terra mencionado no texto?",
+                options: ["Mar Morto", "Vale da Morte", "Fossa das Marianas", "Grande Depressão"],
+                correct: 0,
+                explanation: "O litoral do Mar Morto é mencionado no texto como o ponto mais baixo da Terra."
+            },
+            {
+                question: "Qual é a população aproximada da Austrália mencionada no texto?",
+                options: ["16 milhões", "26 milhões", "36 milhões", "46 milhões"],
+                correct: 1,
+                explanation: "O texto menciona que a Austrália tem cerca de 26 milhões de habitantes."
+            },
+            {
+                question: "Qual é a população aproximada do Brasil mencionada no texto?",
+                options: ["203 milhões", "213 milhões", "223 milhões", "233 milhões"],
+                correct: 0,
+                explanation: "O texto menciona que o Brasil tem cerca de 203 milhões de habitantes em 2022."
+            },
+            {
+                question: "Qual é a população aproximada da Rússia mencionada no texto?",
+                options: ["123 milhões", "133 milhões", "143 milhões", "153 milhões"],
+                correct: 2,
+                explanation: "O texto menciona que a Rússia contabilizava cerca de 143 milhões de habitantes em 2022."
+            },
+            {
+                question: "Qual é a população aproximada dos Estados Unidos mencionada no texto?",
+                options: ["313 milhões", "323 milhões", "333 milhões", "343 milhões"],
+                correct: 2,
+                explanation: "O texto menciona que os Estados Unidos tinham cerca de 333 milhões de habitantes em 2022."
+            },
+            {
+                question: "Qual é o nome dos povos nativos da Nova Zelândia mencionados no texto?",
+                options: ["Aborígenes", "Maoris", "Inuítes", "Havaianos"],
+                correct: 1,
+                explanation: "Os Maoris são mencionados como os povos nativos da Nova Zelândia."
+            },
+            {
+                question: "Qual é a vestimenta tradicional indiana mencionada no texto?",
+                options: ["Quimono", "Sári", "Burca", "Caftan"],
+                correct: 1,
+                explanation: "O sári é mencionado como a vestimenta tradicional indiana."
+            },
+            {
+                question: "Qual é a vestimenta tradicional japonesa mencionada no texto?",
+                options: ["Sári", "Hanbok", "Quimono", "Cheongsam"],
+                correct: 2,
+                explanation: "O quimono é mencionado como a vestimenta tradicional japonesa."
+            },
+            {
+                question: "Como são chamados os palitinhos usados para fazer refeições no Japão?",
+                options: ["Hashi", "Kuaizi", "Jeotgarak", "Chopsticks"],
+                correct: 0,
+                explanation: "Os palitinhos usados para fazer refeições no Japão são chamados de hashi."
+            },
+            {
+                question: "Em qual mês os povos indígenas do Chile comemoram o Ano-Novo, segundo o texto?",
+                options: ["Janeiro", "Março", "Junho", "Dezembro"],
+                correct: 2,
+                explanation: "Segundo o texto, os povos indígenas do Chile comemoram o Ano-Novo na noite de 24 de junho."
+            },
+            {
+                question: "Qual é o nome da estação de pesquisa argentina na Antártida mencionada no texto?",
+                options: ["Base Esperanza", "Base Marambio", "Base Orcadas", "Base San Martín"],
+                correct: 2,
+                explanation: "A Base Orcadas é mencionada como a estação de pesquisa argentina mais antiga da Antártida."
+            }
+        ];
 
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+
+        function startQuiz() {
+            currentQuestions = getRandomQuestions(allQuestions, 10);
+            currentQuestionIndex = 0;
+            score = 0;
+            loadQuestion();
+        }
+
+        function getRandomQuestions(arr, n) {
+            let result = new Array(n),
+                len = arr.length,
+                taken = new Array(len);
+            if (n > len)
+                throw new RangeError("getRandomQuestions: more elements taken than available");
+            while (n--) {
+                let x = Math.floor(Math.random() * len);
+                result[n] = arr[x in taken ? taken[x] : x];
+                taken[x] = --len in taken ? taken[len] : len;
+            }
+            return result;
+        }
+
+        function loadQuestion() {
+            answered = false;
+            const questionElement = document.getElementById("question");
+            const optionsContainer = document.getElementById("options");
+            const feedbackElement = document.getElementById("feedback");
+            const nextButton = document.getElementById("next-button");
+            const progressElement = document.getElementById("progress");
+
+            feedbackElement.className = "hidden";
+            nextButton.disabled = true;
+            
+            const currentQuestion = currentQuestions[currentQuestionIndex];
+
+            questionElement.textContent = currentQuestion.question;
+            optionsContainer.innerHTML = "";
+            progressElement.textContent = `Pergunta ${currentQuestionIndex + 1} de ${currentQuestions.length}`;
+
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.className = "option-btn";
+                button.onclick = () => checkAnswer(index);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedIndex) {
+            if (answered) return;
+            
+            answered = true;
+            const currentQuestion = currentQuestions[currentQuestionIndex];
+            const feedbackElement = document.getElementById("feedback");
+            const scoreElement = document.getElementById("score");
+            const nextButton = document.getElementById("next-button");
+            const optionButtons = document.querySelectorAll(".option-btn");
+
+            optionButtons.forEach(button => {
+                button.disabled = true;
+            });
+
+            optionButtons[currentQuestion.correct].style.backgroundColor = "#28a745";
+            
+            if (selectedIndex !== currentQuestion.correct) {
+                optionButtons[selectedIndex].style.backgroundColor = "#dc3545";
+            }
+
+            if (selectedIndex === currentQuestion.correct) {
+                score++;
+                feedbackElement.textContent = "Correto! Parabéns!";
+                feedbackElement.className = "correct";
+            } else {
+                feedbackElement.textContent = `Incorreto! ${currentQuestion.explanation}`;
+                feedbackElement.className = "incorrect";
+            }
+
+            scoreElement.textContent = `Pontuação: ${score}`;
+            nextButton.disabled = false;
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function showFinalResults() {
+            const questionContainer = document.getElementById("question-container");
+            const feedbackElement = document.getElementById("feedback");
+            const nextButton = document.getElementById("next-button");
+            const finalMessage = document.getElementById("final-message");
+
+            questionContainer.style.display = "none";
+            feedbackElement.className = "hidden";
+            nextButton.style.display = "none";
+            
+            finalMessage.textContent = `Fim do Quiz! Você acertou ${score} de ${currentQuestions.length} perguntas.`;
+            finalMessage.className = "";
+            
+            let percentCorrect = (score / currentQuestions.length) * 100;
+            
+            if (percentCorrect >= 90) {
+                finalMessage.innerHTML += "<br><br>Excelente! Você é um especialista em oceanos e continentes!";
+            } else if (percentCorrect >= 70) {
+                finalMessage.innerHTML += "<br><br>Muito bom! Você tem um ótimo conhecimento sobre o tema!";
+            } else if (percentCorrect >= 50) {
+                finalMessage.innerHTML += "<br><br>Bom trabalho! Você conhece o básico sobre oceanos e continentes.";
+            } else {
+                finalMessage.innerHTML += "<br><br>Continue estudando! Com mais prática você vai melhorar seu conhecimento.";
+            }
+            
+            const restartButton = document.createElement("button");
+            restartButton.textContent = "Jogar Novamente";
+            restartButton.style.marginTop = "20px";
+            restartButton.style.padding = "12px 25px";
+            restartButton.style.fontSize = "1.1em";
+            restartButton.style.backgroundColor = "#007bff";
+            restartButton.style.color = "white";
+            restartButton.style.border = "none";
+            restartButton.style.borderRadius = "5px";
+            restartButton.style.cursor = "pointer";
+            
+            restartButton.onclick = function() {
+                questionContainer.style.display = "block";
+                nextButton.style.display = "block";
+                finalMessage.className = "hidden";
+                finalMessage.innerHTML = "";
+                document.getElementById("score").textContent = "Pontuação: 0";
+                this.remove();
+                startQuiz();
+            };
+            
+            finalMessage.appendChild(document.createElement("br"));
+            finalMessage.appendChild(restartButton);
+        }
+
+        window.onload = startQuiz;
+    </script>
